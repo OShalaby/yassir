@@ -8,6 +8,14 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      OXFORD_API_BASE_URL: ${{ vars.OXFORD_API_BASE_URL }}
+      OXFORD_APP_ID: ${{ secrets.OXFORD_APP_ID }}
+      OXFORD_APP_KEY: ${{ secrets.OXFORD_APP_KEY }}
+      SPEECHMATICS_API_KEY: ${{ secrets.SPEECHMATICS_API_KEY }}
+      TICKETMASTER_BASE_URL: ${{ vars.TICKETMASTER_BASE_URL }}
+      TICKETMASTER_KEY: ${{ secrets.TICKETMASTER_KEY }}
+      TICKETMASTER_SECRET: ${{ secrets.TICKETMASTER_SECRET }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
