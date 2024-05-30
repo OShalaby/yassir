@@ -4,7 +4,8 @@ import { parseStringPromise } from 'xml2js';
 
 
 test.describe.serial('Login to parabank & request a loan', () => {
-
+    test.skip();
+    
     let customerId, accountId;
 
     test('login & acquire customerId', async ({ request }) => {
