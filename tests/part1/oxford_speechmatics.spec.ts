@@ -9,7 +9,7 @@ const fs = require('fs');
 
 test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmatics', () => {
 
-    let oxford, speechmatics, keyword, fileUrl;
+    let oxford, speechmatics, keyword, fileUrl, filePath;
 
     test.beforeEach(async ({ request }) => {
         oxford = new Oxford(request);
@@ -30,7 +30,7 @@ test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmati
         fileUrl = response.results[0].lexicalEntries[0].entries[0].pronunciations[0].audioFile
         
         try {
-            const filePath = 'voice.mp3';
+            filePath = 'voice.mp3';
             const download = await request.get(fileUrl);
             const fileBuffer = await download.body();
             await writeFile(filePath, fileBuffer);
@@ -42,7 +42,7 @@ test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmati
     });
 
     test(`Transcribe voice mp3 from Speechmatics`, async () => {
-        const input = fs.readFileSync('./downloads/voice.mp3')
+        const input = fs.readFileSync(filePath);
         await speechmatics.transcribe(input, keyword, 200)
     });
 });
