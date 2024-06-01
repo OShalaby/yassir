@@ -30,7 +30,7 @@ test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmati
         fileUrl = response.results[0].lexicalEntries[0].entries[0].pronunciations[0].audioFile
         
         try {
-            const filePath = './downloads/voice.mp3';
+            const filePath = 'voice.mp3';
             const download = await request.get(fileUrl);
             const fileBuffer = await download.body();
             await writeFile(filePath, fileBuffer);
