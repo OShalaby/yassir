@@ -26,7 +26,20 @@ ________________________________________________________________
 ## Part 2: Plaid API Automation
 
 Since Parabank was unstable for automating scenarios (due to frequent changes by hackers affecting IDs and vital needed data) for the completion of the scenario, I opted to automate scenarios using Plaid's APIs.
+
 ________________________________________________________________
+
+## Setup:
+(environment variables are available as vars and secrets in the repository settings)
+
+npm i
+npx playwright test
+
+docker build -t playwright-tests .
+docker run playwright-tests
+
+________________________________________________________________
+
 
 ## Part 3: Integration of API Test Automation for Web and Mobile
 
