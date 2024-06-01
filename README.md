@@ -1,4 +1,5 @@
 # Yassir Test Automation Project
+________________________________________________________________
 
 ## Part 1: Oxford Dictionary + Speechmatics
 
@@ -15,15 +16,17 @@
 
 ### Explanation of the Provided Solution
 
-To automate these test cases and run them efficiently, an automation framework with a test runner is required. For this project, Playwright's APIContext was chosen due to its robust capabilities for handling API interactions.
+To automate these test cases and run them efficiently, an automation framework with a test runner is required. For this project, Playwright was chosen due to its robust capabilities for handling API interactions.
 
 Regarding scalability, API requests were structured using a Page Object Model (POM) style for reusability and maintainability.
 
 The tests are executed within a Docker container on GitHub Actions upon each push to the master branch, ensuring continuous integration and testing.
+________________________________________________________________
 
 ## Part 2: Plaid API Automation
 
-Since Parabank was not stable for automating scenarios (due to frequent changes by hackers affecting IDs and vital data), I opted to automate scenarios using Plaid's APIs.
+Since Parabank was unstable for automating scenarios (due to frequent changes by hackers affecting IDs and vital needed data) for the completion of the scenario, I opted to automate scenarios using Plaid's APIs.
+________________________________________________________________
 
 ## Part 3: Integration of API Test Automation for Web and Mobile
 
