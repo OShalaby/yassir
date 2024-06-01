@@ -15,9 +15,9 @@ jobs:
       OXFORD_APP_ID: ${{ secrets.OXFORD_APP_ID }}
       OXFORD_APP_KEY: ${{ secrets.OXFORD_APP_KEY }}
       SPEECHMATICS_API_KEY: ${{ secrets.SPEECHMATICS_API_KEY }}
-      TICKETMASTER_BASE_URL: ${{ vars.TICKETMASTER_BASE_URL }}
-      TICKETMASTER_KEY: ${{ secrets.TICKETMASTER_KEY }}
-      TICKETMASTER_SECRET: ${{ secrets.TICKETMASTER_SECRET }}
+      PLAID_BASE_URL: ${{ vars.PLAID_BASE_URL }}
+      PLAID_CLIENT_ID: ${{ secrets.PLAID_CLIENT_ID }}
+      PLAID_SECRET_KEY: ${{ secrets.PLAID_SECRET_KEY }}
       
     steps:
     - name: Checkout code
@@ -35,7 +35,7 @@ jobs:
       run: docker build -t playwright-tests .
 
     - name: Run Playwright tests on Docker
-      run: docker run -e OXFORD_API_BASE_URL -e OXFORD_APP_ID -e OXFORD_APP_KEY -e SPEECHMATICS_API_KEY -e TICKETMASTER_BASE_URL -e TICKETMASTER_KEY -e TICKETMASTER_SECRET playwright-tests
+      run: docker run -e OXFORD_API_BASE_URL -e OXFORD_APP_ID -e OXFORD_APP_KEY -e SPEECHMATICS_API_KEY -e PLAID_BASE_URL -e PLAID_CLIENT_ID -e PLAID_SECRET_KEY playwright-tests
 
     - name: Upload Playwright report
       uses: actions/upload-artifact@v4
