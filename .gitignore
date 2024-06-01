@@ -4,4 +4,4 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 .env
-downloaded.mp3
+downloads/voice.mp3
