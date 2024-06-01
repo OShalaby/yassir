@@ -1,55 +1,36 @@
 import { test, expect } from '@playwright/test';
+import { Oxford } from '@api/oxford';
 import { writeFile } from 'fs/promises'
+import { Speechmatics } from '@api/speechmatics';
+
 
 
 const fs = require('fs');
 
 test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmatics', () => {
 
-    let fileUrl;
+    let oxford, speechmatics, keyword, fileUrl, filePath;
 
-    test('Search Oxford Dictionary', async ({ request }) => {
-        const searchResults = await request.get(`${process.env.OXFORD_API_BASE_URL}search/en-gb`, {
-            headers: { 
-                app_id: `${process.env.OXFORD_APP_ID}`,
-                app_key: `${process.env.OXFORD_APP_KEY}`
-            },
-            params: {
-                q: 'animal' ,
-                limit: 5
-            }
-        });
+    test.beforeEach(async ({ request }) => {
+        oxford = new Oxford(request);
+        speechmatics = new Speechmatics;
+        keyword = 'Animal'
+    });
 
-        const response = await searchResults.json();
-        const status = searchResults.status();
-        
-        expect(status).toEqual(200);
+    test('Search Oxford Dictionary', async () => {
+        const response = await oxford.search(keyword, 5, 200);
         expect(response.results.length).toEqual(5);
         expect(response.results[0].score).toBeGreaterThan(100);
     });
 
     test('Retrieve Oxford Dictionary Entry', async ({ request }) => {
-        const searchResults = await request.get(`${process.env.OXFORD_API_BASE_URL}words/en-gb`, {
-            headers: { 
-                app_id: '6a258888',
-                app_key: 'd0acaa6823d40f1d5726246e5f399da2'
-
-            },
-            params: {
-                q: 'animal'
-            }
-        });
-
-        const response = await searchResults.json();
-        const status = searchResults.status();
-        
-        expect(status).toEqual(200);
+        const response = await oxford.get_entry(keyword, 200)
         expect(response.metadata.schema).toContain('RetrieveEntry');
-        
+
         fileUrl = response.results[0].lexicalEntries[0].entries[0].pronunciations[0].audioFile
         
         try {
-            const filePath = 'downloaded.mp3';
+            filePath = 'voice.mp3';
             const download = await request.get(fileUrl);
             const fileBuffer = await download.body();
             await writeFile(filePath, fileBuffer);
@@ -58,29 +39,10 @@ test.describe.serial('Search & Retrieve from Oxford & Transcribe from Speechmati
         } catch (error) {
             console.error('Error downloading file:', error);
         }
-        
     });
 
     test(`Transcribe voice mp3 from Speechmatics`, async () => {
-        const { Speechmatics } = require('speechmatics');
-        
-        const sm = new Speechmatics(process.env.SPEECHMATICS_API_KEY);
-        const input = new Blob([
-            fs.readFileSync('downloaded.mp3'),
-        ]);
-
-        await sm.batch
-        .transcribe({
-            input,
-            transcription_config: { language: 'en' },
-            format: 'text',
-        })
-        .then((transcriptText) => {
-            expect(transcriptText).toContain('Animal')
-        })
-        .catch((error) => {
-            console.log(error);
-            process.exit(1);
-        });
+        const input = fs.readFileSync(filePath);
+        await speechmatics.transcribe(input, keyword, 200)
     });
 });
